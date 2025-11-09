@@ -34,6 +34,7 @@ A compact, real-world research project analyzing feedback from 100 students abou
 - `Project Report PW.pdf` — Concise report suitable for quick review
 - `Google Form Link.txt` — Short text file with the live survey link
 - `index.html` — Rich, single-page overview (policies, workflow, quick start)
+ - `index.html` — Rich, single-page overview (policies, workflow, quick start). Host via GitHub Pages (Settings → Pages → Deploy from branch → `main` / root).
 
 ## Problem & motivation
 Learners engage with Physics Wallah for exam prep and conceptual understanding. This project measures the student experience—content quality, platform usability, perceived value, and overall satisfaction—to inform actionable improvements and highlight strengths that matter to students.
