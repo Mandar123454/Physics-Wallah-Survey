@@ -1,39 +1,23 @@
-# OS & editor junk
-.DS_Store
-Thumbs.db
-desktop.ini
-*$RECYCLE.BIN/
-
-# Office temp/lock files
-~$*.doc*
-~$*.xls*
-~$*.ppt*
-
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Python/Node (in case of future scripts)
+# Python venv and caches
+.venv/
 __pycache__/
 *.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node/npm (if used later)
 node_modules/
 
-# Data & artifacts (keep sensitive data out of git)
-data/**
-!data/README.md
-artifacts/**
-*.xlsx
-*.csv
-*.parquet
-*.arrow
-*.feather
-*.png
-*.svg
-*.pdf
-*.pptx
+# Env
+.env
+.env.*
 
-# Virtual envs
-.venv/
-venv/
+# Build/coverage (if added later)
+dist/
+build/
+coverage/
+
+# Keep survey data in repo
+# (do NOT ignore .xlsx to include the source spreadsheet)

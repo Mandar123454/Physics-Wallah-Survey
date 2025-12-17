@@ -1,114 +1,84 @@
-# Physics Wallah Student Experience Survey & Insights
+# Physics Wallah Survey — Animated Dashboard
 
-<!-- Badges -->
-[![CI](https://github.com/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/actions)
-[![License: MIT](https://img.shields.io/badge/Code%20License-MIT-yellow.svg)](LICENSE)
-[![Data License: CC BY-NC-ND 4.0](https://img.shields.io/badge/Data%20License-CC%20BY--NC--ND%204.0-lightgrey.svg)](DATA_LICENSE.md)
-[![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](requirements.txt)
-[![Tests](https://img.shields.io/github/actions/workflow/status/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/ci.yml?label=tests)](https://github.com/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/actions)
-[![Last Commit](https://img.shields.io/github/last-commit/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights.svg)](../../commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights.svg)](../../)
-[![Maintained](https://img.shields.io/badge/Maintained-Yes-success.svg)](../../)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2FMandar123454.github.io%2FPhysics-Wallah-Student-Experience-Survey-Insights%2F&label=pages)](https://Mandar123454.github.io/Physics-Wallah-Student-Experience-Survey-Insights/)
-[![Pages Deployments](https://img.shields.io/github/deployments/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/github-pages?label=deploy)](../../deployments/activity_log?environment=github-pages)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Made with](https://img.shields.io/badge/Chart.js-visualizations-ff6384?logo=chartdotjs&logoColor=white)
+![Static](https://img.shields.io/badge/Static-Site-0ea5e9)
+![Deploy](https://img.shields.io/badge/Deploy-Netlify-00C7B7?logo=netlify&logoColor=white)
 
-[![CI](https://github.com/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](requirements.txt)
+A polished single‑page dashboard (Chart.js + vanilla JS) for the Physics Wallah survey of 100 students. It autoloads `assets/data.json` generated from your Google Form responses and provides animated KPIs, filters, two rich charts, export to PNG, and an insights panel.
 
-A compact, real-world research project analyzing feedback from 100 students about their experience with the Physics Wallah platform. The repository includes the original Google Form link, a polished slide deck, and a concise PDF report—designed to showcase end-to-end data collection, analysis, and presentation.
-
-- View everything in one place (Drive): https://drive.google.com/drive/folders/1Ct4zSFsgRAWPj04L74Yg340o1TjY0YEF
-- Original survey form: https://forms.gle/45jCQ7ntKWpYTY6v8
-
-> Important: This repository is for educational demonstration. Do not redistribute any survey data. See Data Usage & Privacy below and `DATA_POLICY.md`.
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/blob/main/notebooks/analysis.ipynb)
-
-Live site: https://Mandar123454.github.io/Physics-Wallah-Student-Experience-Survey-Insights/
-
-## Highlights
-- 100 respondents surveyed via Google Forms
-- Structured data in Google Sheets/Excel and visualized with charts/graphs
-- Executive-ready PowerPoint presentation and a brief PDF report
-- Clear, reproducible approach for survey-based analysis
-
-## Repository contents
-- `Physics Wallah Survey.pptx` — Slide deck summarizing approach and insights
-- `Project Report PW.pdf` — Concise report suitable for quick review
-- `Google Form Link.txt` — Short text file with the live survey link
-- `index.html` — Rich, single-page overview (policies, workflow, quick start)
- - `index.html` — Rich, single-page overview (policies, workflow, quick start). Host via GitHub Pages (Settings → Pages → Deploy from branch → `main` / root).
-
-## Problem & motivation
-Learners engage with Physics Wallah for exam prep and conceptual understanding. This project measures the student experience—content quality, platform usability, perceived value, and overall satisfaction—to inform actionable improvements and highlight strengths that matter to students.
-
-## Methodology (at a glance)
-1. Survey design: multi-question Google Form covering demographics, usage, satisfaction, and open feedback
-2. Data collection: 100 valid responses
-3. Structuring: Google Sheets cleanup, Excel export
-4. Analysis: descriptive stats, frequency distributions, cross-tabs, and visual summaries
-5. Communication: slide narrative and a concise PDF report
-
-## What’s analyzed
-- Overall satisfaction & likelihood to recommend
-- Perceived content quality and instructor effectiveness
-- Platform usability (navigation, speed, reliability)
-- Value for money and subscription preferences
-- Study patterns: usage frequency, device preferences
-- Open-ended feedback themes
-
-> Note: The code attempts to drop likely PII during processing. Aggregated insights are communicated via charts and summary text.
-
-## How to explore
- - For code-based workflow: see the notebook in `notebooks/analysis.ipynb` or run the script in `scripts/clean_and_analyze.py`
-
-## Reproducibility (manual)
-
-## Reproducibility (code)
-Use Python to automate cleaning, metrics, and figures.
-
-Prerequisites: Python 3.10+ recommended.
+## Quick start
 
 ```powershell
-# From repository root
-pip install -r requirements.txt
-python .\scripts\clean_and_analyze.py
+cd "e:\Internships and Projects\ML Projects\Physics Wallah Survey"
+".venv\Scripts\python.exe" -m http.server 5500
+# Open http://localhost:5500
 ```
 
-Outputs will be written to `artifacts/`:
-- `artifacts/summary.md` — key stats, NPS-style score, sentiment summary
-- `artifacts/figures/*.png` — autogenerated charts
+## Data refresh
 
-### Run tests
-Install dev requirements and run the test suite:
+Regenerate `assets/data.json` if the Excel file changes:
 
 ```powershell
-pip install -r requirements-dev.txt
-pytest -q
+".venv\Scripts\python.exe" - <<'PY'
+import os, json, pandas as pd, numpy as np
+root = r"e:/Internships and Projects/ML Projects/Physics Wallah Survey"
+xf = os.path.join(root, "Physics Wallah Survey  (Responses).xlsx")
+df = pd.read_excel(xf)
+drop = [c for c in df.columns if str(c).lower().startswith('unnamed') and df[c].isna().all()]
+df = df.drop(columns=drop) if drop else df
+for c in df.columns:
+  if pd.api.types.is_datetime64_any_dtype(df[c]):
+    df[c] = df[c].dt.strftime('%Y-%m-%d %H:%M:%S').astype(object)
+df = df.replace({np.nan: None})
+rows = df.to_dict(orient='records')
+os.makedirs(os.path.join(root,'assets'), exist_ok=True)
+with open(os.path.join(root,'assets','data.json'),'w',encoding='utf-8') as f:
+  json.dump({'rows': rows}, f, ensure_ascii=False)
+print('Updated assets/data.json', len(rows), 'rows')
+PY
 ```
 
-## Tools used
- - Python (pandas, seaborn, matplotlib, TextBlob) for reproducible analysis
+## Features
 
+- Animated KPIs and chart reveal
+- Auto-detection of numeric/categorical/time + Likert mapping
+- Export PNG for each chart
+- Key Insights sentences
+- Works 100% static (no backend)
 
+## Deploy to Netlify
 
-## Data Usage & Privacy
-- Educational-use only: Do not copy, publish, or redistribute any survey data without explicit written permission. See `DATA_LICENSE.md`.
-- The code removes likely PII fields (e.g., name, email, phone) during processing, but you must still treat all data as sensitive.
-- Keep any local raw/cleaned data files private. Avoid committing them—see `CONTRIBUTING.md` and `.gitignore`.
-- If you believe any sensitive content was inadvertently published, please open a takedown request.
+This is a static site. Two easy ways:
 
-## Contributing & License
-- Contributions welcome—see `CONTRIBUTING.md`.
-- Code: MIT License (see `LICENSE`).
-- Data: CC BY-NC-ND 4.0 (Non-Commercial, No Derivatives). See `DATA_LICENSE.md` and `DATA_POLICY.md`.
- - Project Overview Page: open `index.html` locally or host via GitHub Pages.
+1) Netlify Drop (UI)
+- Zip or select the project folder and drag onto: https://app.netlify.com/drop
 
+2) Netlify CLI
+```bash
+npm i -g netlify-cli
+netlify login
+netlify deploy --dir .          # preview URL
+netlify deploy --prod --dir .   # production URL
+```
 
-## Code of Conduct
-Please follow our community expectations in `CODE_OF_CONDUCT.md`. Be respectful, constructive, and protect participant privacy. Violations may result in issue/PR moderation.
-- No personally identifiable information is shared in this repository.
+Caching of `assets/data.json` is disabled via `netlify.toml` so updates reflect immediately.
 
-## Acknowledgements
-Thanks to all student respondents who contributed their time and feedback.
+## Push to GitHub
+
+```powershell
+git init
+git add .
+git commit -m "feat: initial dashboard"
+git branch -M main
+git remote add origin https://github.com/Mandar123454/Physics-Wallah-Survey.git
+git push -u origin main
+```
+
+## License & Security
+
+- License: MIT (see [LICENSE](LICENSE))
+- Security: See [SECURITY.md](SECURITY.md) for reporting guidelines
+
+---
+Built with HTML + CSS + Chart.js. Smooth, professional, and shareable.

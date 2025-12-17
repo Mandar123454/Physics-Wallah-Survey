@@ -1,0 +1,10 @@
+[build]
+  publish = "."
+
+# Ensure the dashboard always fetches the latest bundled data
+[[headers]]
+  for = "/assets/data.json"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"

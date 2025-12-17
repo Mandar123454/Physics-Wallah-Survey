@@ -1,179 +1,633 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Physics Wallah Student Experience Survey – Overview</title>
-<meta name="description" content="Educational survey analysis: methodology, policies, and reproducible workflow." />
-<meta property="og:title" content="Physics Wallah Student Experience Survey" />
-<meta property="og:description" content="Educational research project: reproducible workflow, anonymization, ethics, and insight communication." />
-<meta property="og:type" content="website" />
-<meta name="robots" content="noindex" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='60' r='60' fill='%231e3a8a'/%3E%3Ctext x='50%' y='55%' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3EPW%3C/text%3E%3C/svg%3E" />
-<style>
-:root {
-  --bg: #0f172a;
-  --panel: #1e293b;
-  --accent: #2563eb;
-  --accent-grad: linear-gradient(135deg,#1d4ed8,#3b82f6 60%,#60a5fa);
-  --text: #f1f5f9;
-  --muted: #94a3b8;
-  --danger: #dc2626;
-  --radius: 14px;
-  --shadow: 0 8px 24px -6px rgba(0,0,0,.5);
-}
-html,body {margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.45;}
-header {padding:72px 32px 56px;background:radial-gradient(circle at 30% 20%,#334155,#0f172a 80%);} 
-header h1 {margin:0;font-size:clamp(2.2rem,4.5vw,3.6rem);background:var(--accent-grad);-webkit-background-clip:text;color:transparent;font-weight:700;letter-spacing:.5px;}
-header p {max-width:760px;font-size:1.05rem;color:var(--muted);margin:18px 0 0;}
-main {max-width:1240px;margin:0 auto 80px;padding:0 32px;} 
-.grid {display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
-.card {background:var(--panel);border-radius:var(--radius);padding:24px 24px 28px;position:relative;box-shadow:var(--shadow);overflow:hidden;}
-.card h2 {margin:0 0 14px;font-size:1.25rem;letter-spacing:.3px;display:flex;align-items:center;gap:8px;}
-.small {font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px;}
-.badges {display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px;}
-.badges a, .pill {background:#334155;padding:6px 12px;border-radius:40px;font-size:.7rem;font-weight:600;letter-spacing:.05em;text-decoration:none;color:var(--text);border:1px solid #475569;}
-.badges a:hover {background:#475569;}
-.accent-link {color:#3b82f6;text-decoration:none;font-weight:600;}
-.accent-link:hover {text-decoration:underline;}
-ul {margin:0;padding-left:20px;}
-section ul li {margin-bottom:6px;}
-a {color:#60a5fa;}
-footer {text-align:center;padding:48px 32px;color:var(--muted);font-size:.8rem;}
-hr {border:none;border-top:1px solid #334155;margin:32px 0;}
-.notice {background:#1e293b;border:1px solid #334155;padding:16px 18px;border-radius:12px;font-size:.85rem;color:var(--muted);}
-.warning {border-left:6px solid var(--danger);padding-left:12px;}
-.flex {display:flex;flex-direction:column;gap:10px;}
-.code {font-family:SFMono-Regular,Consolas,Menlo,monospace;background:#0f1e33;padding:2px 6px;border-radius:6px;font-size:.75rem;}
-.details summary {cursor:pointer;font-weight:600;color:#fff;}
-.details {background:#142033;padding:14px 18px;border-radius:10px;margin-top:10px;}
-.tagline {font-size:.9rem;font-weight:500;color:#e2e8f0;margin-top:4px;}
-.button-bar {display:flex;flex-wrap:wrap;gap:12px;margin:18px 0 4px;}
-.button-bar a {text-decoration:none;background:var(--accent-grad);color:#fff;padding:10px 18px;border-radius:10px;font-size:.85rem;font-weight:600;box-shadow:0 4px 12px -2px rgba(0,0,0,.4);transition:.25s;}
-.button-bar a:hover {transform:translateY(-3px);}
-.logoMark {position:absolute;right:-20px;top:-20px;font-size:160px;font-weight:800;opacity:.04;pointer-events:none;}
-@media (max-width:720px){header{padding:56px 22px 48px;}main{padding:0 22px;margin-top:0;} .grid{gap:24px;} .card{padding:22px 20px 24px;} }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Physics Wallah Survey — Animated Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- PapaParse for CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- SheetJS for XLSX -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <meta name="description" content="Interactive, animated dashboard for Physics Wallah survey of 100 students." />
 </head>
 <body>
-<header>
-  <h1>Physics Wallah Student Experience Survey</h1>
-  <p class="tagline">Educational research project — reproducible workflow, anonymization strategy, ethical data handling, and insight communication.</p>
-  <p>This page summarizes the project scope, methodology, policies, and provides quick launch points for code, analysis, and participation intake.</p>
-  <div class="button-bar">
-    <a href="https://forms.gle/45jCQ7ntKWpYTY6v8" target="_blank" rel="noopener">Survey Form Link</a>
-    <a href="notebooks/analysis.ipynb" target="_blank" rel="noopener">Notebook (raw)</a>
-    <a href="https://colab.research.google.com/github/Mandar123454/Physics-Wallah-Student-Experience-Survey-Insights/blob/main/notebooks/analysis.ipynb" target="_blank" rel="noopener">Open in Colab</a>
-    <a href="scripts/clean_and_analyze.py" target="_blank" rel="noopener">Core Script</a>
-    <a href="DATA_POLICY.md" target="_blank" rel="noopener">Data Policy</a>
-    <a href="DATA_LICENSE.md" target="_blank" rel="noopener">Data License</a>
-    <a href="LICENSE" target="_blank" rel="noopener">MIT Code License</a>
-  </div>
-</header>
-<main>
-  <div class="grid">
-    <div class="card" id="overview">
-      <div class="logoMark">PW</div>
-      <h2>Overview</h2>
-      <p>Survey of 100 learner experiences with the Physics Wallah platform. Focus areas include satisfaction, usability, content quality, value, recommendation likelihood, and open-ended feedback sentiment.</p>
-      <ul>
-        <li>100 structured responses (not publicly redistributed)</li>
-        <li>Anonymization pipeline drops likely PII patterns (email, phone, name, etc.)</li>
-        <li>Automated summary + figures produced via Python script</li>
-      </ul>
-    </div>
-    <div class="card" id="workflow">
-      <h2>Workflow & Reproducibility</h2>
-      <ol style="margin:0;padding-left:20px;">
-        <li>Design form (Google Forms)</li>
-        <li>Collect responses (private)</li>
-        <li>Export Excel → local processing</li>
-        <li>Run <code class="code">scripts/clean_and_analyze.py</code></li>
-        <li>Generate <code class="code">artifacts/summary.md</code> + figures</li>
-        <li>Review & share aggregated insights only</li>
-      </ol>
-      <p class="small">Command (local): <code class="code">python scripts/clean_and_analyze.py</code></p>
-    </div>
-    <div class="card" id="privacy">
-      <h2>Data Usage & Privacy</h2>
-      <div class="notice warning">
-        <strong>Sensitive Educational Data.</strong> Not for redistribution. Treat all copies as confidential research material.
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo">PW</div>
+        <div class="brand-text">
+          <strong>Physics Wallah</strong>
+          <span>Survey Dashboard</span>
+        </div>
       </div>
-      <ul>
-        <li>No direct identifiers should be committed (names, emails, phones).</li>
-        <li>Data license: <strong>CC BY-NC-ND 4.0</strong> (non-commercial, no derivatives).</li>
-        <li>If a sensitive file leaks, open an issue tagged <code class="code">[PRIVACY]</code>.</li>
-        <li>Never attempt re-identification or merging with external datasets.</li>
-      </ul>
-      <p>See full policy: <a class="accent-link" href="DATA_POLICY.md">DATA_POLICY.md</a></p>
+      <nav class="nav">
+        <a class="btn btn-ghost" id="viewForm" href="https://forms.gle/45jCQ7ntKWpYTY6v8" target="_blank" rel="noopener">Google Form</a>
+        <a class="btn btn-ghost" id="viewReport" href="Project Report PW.pdf" target="_blank" rel="noopener">Report</a>
+        <a class="btn btn-ghost" id="viewSlides" href="Physics Wallah Survey.pptx" target="_blank" rel="noopener">Slides</a>
+        <span class="btn-ghost badge" style="padding:10px 0"><span class="status-dot"></span>Auto-loaded data</span>
+      </nav>
     </div>
-    <div class="card" id="metrics">
-      <h2>Key Components</h2>
-      <ul>
-        <li><code class="code">clean_and_analyze.py</code>: orchestrates anonymization + metrics.</li>
-        <li>Basic stats (counts, mean, std, quartiles).</li>
-        <li>NPS-style promoter/detractor classification (scaled if needed).</li>
-        <li>Optional sentiment (TextBlob) for open text, if installed.</li>
-        <li>Seaborn visual distributions & categorical counts.</li>
-      </ul>
-      <p class="small">Real metrics intentionally omitted here; regenerate locally.</p>
-    </div>
-    <div class="card" id="tech">
-      <h2>Tech Stack</h2>
-      <div class="badges">
-        <span class="pill">Python 3.11</span>
-        <span class="pill">pandas</span>
-        <span class="pill">seaborn</span>
-        <span class="pill">matplotlib</span>
-        <span class="pill">TextBlob (optional)</span>
-        <span class="pill">openpyxl</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content fade-in">
+          <h1>Survey Insights from 100 Students</h1>
+          <p>Beautiful, smooth animations over your 100‑student survey. The dashboard autoloads your latest responses and transforms common labels (Excellent, Very Likely, etc.) into clean metrics for instant insight.</p>
+          <div class="actions">
+            <a class="btn" href="#dashboard">View Dashboard</a>
+            <a class="btn btn-ghost" href="https://forms.gle/45jCQ7ntKWpYTY6v8" target="_blank" rel="noopener">Open Google Form</a>
+          </div>
+        </div>
       </div>
-      <p>Dependencies captured in <a href="requirements.txt">requirements.txt</a> and dev test tools in <a href="requirements-dev.txt">requirements-dev.txt</a>.</p>
-    </div>
-    <div class="card" id="contrib">
-      <h2>Contributing</h2>
-      <ul>
-        <li>Fork → branch → pull request.</li>
-        <li>Avoid committing any raw or cleaned real survey data.</li>
-        <li>Add tests around new transformation logic.</li>
-        <li>Respect Code of Conduct; be constructive.</li>
-      </ul>
-      <p>Guide: <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> • Conduct: <a href="CODE_OF_CONDUCT.md">CODE_OF_CONDUCT.md</a></p>
-    </div>
-    <div class="card" id="licenses">
-      <h2>Licenses</h2>
-      <ul>
-        <li><strong>Code:</strong> MIT (permissive reuse)</li>
-        <li><strong>Data:</strong> CC BY-NC-ND 4.0 (no derivatives / non-commercial)</li>
-      </ul>
-      <p>Attribution example: <em>"Physics Wallah Student Experience Survey (2025) – Mandar, GitHub repository."</em></p>
-    </div>
-    <div class="card" id="run">
-      <h2>Quick Start</h2>
-      <div class="details">
-        <summary>Install & Execute</summary>
-        <pre style="white-space:pre-wrap;font-size:.75rem;line-height:1.35;background:#0f1e33;padding:12px;border-radius:8px;overflow:auto;">pip install -r requirements.txt
-python scripts/clean_and_analyze.py
-# results: artifacts/summary.md + artifacts/figures/*</pre>
+      <div class="bg-accent" aria-hidden="true"></div>
+    </section>
+
+    <section id="dashboard" class="container">
+      <div class="kpis">
+        <div class="card kpi fade-in">
+          <span class="kpi-label">Total Responses</span>
+          <span class="kpi-value" id="kpiResponses">—</span>
+        </div>
+        <div class="card kpi fade-in">
+          <span class="kpi-label">Average Satisfaction</span>
+          <span class="kpi-value" id="kpiAverage">—</span>
+        </div>
+        <div class="card kpi fade-in">
+          <span class="kpi-label">Questions</span>
+          <span class="kpi-value" id="kpiQuestions">—</span>
+        </div>
+        <div class="card kpi fade-in">
+          <span class="kpi-label">Last Updated</span>
+          <span class="kpi-value" id="kpiUpdated">—</span>
+        </div>
       </div>
-      <div class="details">
-        <summary>Run Tests</summary>
-        <pre style="white-space:pre-wrap;font-size:.75rem;line-height:1.35;background:#0f1e33;padding:12px;border-radius:8px;overflow:auto;">pip install -r requirements-dev.txt
-pytest -q</pre>
+
+      <div class="controls card fade-in">
+        <div class="control">
+          <label for="selectQuestion">Question/Column</label>
+          <select id="selectQuestion"></select>
+        </div>
+        <div class="control">
+          <label for="selectGroup">Group by</label>
+          <select id="selectGroup"></select>
+        </div>
+        <div class="control">
+          <label for="selectTime">Time (if available)</label>
+          <select id="selectTime"></select>
+        </div>
+        
+      </div>
+
+      <div class="grid">
+        <div class="card chart fade-in">
+          <div class="chart-header"><h3 id="chart1Title">Distribution</h3><button class="btn btn-ghost btn-sm" id="export1">Export PNG</button></div>
+          <canvas id="chart1" height="120"></canvas>
+        </div>
+        <div class="card chart fade-in">
+          <div class="chart-header"><h3 id="chart2Title">Group Comparison</h3><button class="btn btn-ghost btn-sm" id="export2">Export PNG</button></div>
+          <canvas id="chart2" height="120"></canvas>
+        </div>
+      </div>
+
+      <div class="card insights fade-in" id="insights">
+        <h3>Key Insights</h3>
+        <ul id="insightsList"></ul>
+      </div>
+
+      <div class="card tips fade-in" id="summary">
+        <p><strong>Summary:</strong> Data auto-loaded. Insights will appear here after analysis.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="fcol">
+        <div class="logo" style="width:32px;height:32px;border-radius:8px;">PW</div>
+        <p class="foot-tag">A fast, animated snapshot of student sentiment and outcomes — ready to share.</p>
+      </div>
+      <div class="fcol">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="https://forms.gle/45jCQ7ntKWpYTY6v8" target="_blank" rel="noopener">Google Form</a></li>
+          <li><a href="Project Report PW.pdf" target="_blank" rel="noopener">Report (PDF)</a></li>
+          <li><a href="Physics Wallah Survey.pptx" target="_blank" rel="noopener">Slides (PPTX)</a></li>
+          <li><a href="assets/data.json" target="_blank" rel="noopener">Dataset (JSON)</a></li>
+        </ul>
+      </div>
+      
+      <div class="fcol">
+        <h4>Data</h4>
+        <ul>
+          <li>Static site — no backend/server needed</li>
+          <li>Caching disabled for data.json</li>
+        </ul>
       </div>
     </div>
-    <div class="card" id="disclaimer">
-      <h2>Disclaimer</h2>
-      <p>This repository is educational. It does not claim official endorsement by Physics Wallah. Metrics shown in public artifacts are aggregated and anonymized; raw datasets remain private. Use at your own risk and follow all ethical guidelines.</p>
+    <div class="container footer-bottom">
+      <span>© <span id="year"></span> Physics Wallah Survey Dashboard</span>
+      <span>Built with HTML + Chart.js • Deployed on Netlify</span>
     </div>
-  </div>
-  <hr />
-  <div class="notice">
-    <strong>Need expanded permission?</strong> Open an issue describing intended usage (academic citation, method comparison, etc.). Commercial or derivative data use requires prior written approval.
-  </div>
-</main>
-<footer>
-  &copy; 2025 Mandar • Educational Use Only • MIT (Code) / CC BY-NC-ND (Data)
-</footer>
+  </footer>
+
+  <script>
+  (() => {
+    const selectQuestion = document.getElementById('selectQuestion');
+    const selectGroup = document.getElementById('selectGroup');
+    const selectTime = document.getElementById('selectTime');
+
+    const kpiResponses = document.getElementById('kpiResponses');
+    const kpiAverage = document.getElementById('kpiAverage');
+    const kpiQuestions = document.getElementById('kpiQuestions');
+    const kpiUpdated = document.getElementById('kpiUpdated');
+
+    const chart1El = document.getElementById('chart1');
+    const chart2El = document.getElementById('chart2');
+
+    let CHART1 = null;
+    let CHART2 = null;
+
+    const LIKERT_MAP = {
+      // Generic Likert
+      'strongly disagree': 1, 'disagree': 2, 'neutral': 3, 'agree': 4, 'strongly agree': 5,
+      'very dissatisfied': 1, 'dissatisfied': 2, 'satisfied': 4, 'very satisfied': 5,
+      // Quality
+      'very poor': 1, 'poor': 2, 'fair': 3, 'good': 4, 'excellent': 5,
+      // Engagement
+      'not engaging': 2, 'somewhat engaging': 4, 'very engaging': 5,
+      // Recommendation likelihood
+      'not likely': 2, 'somewhat likely': 4, 'very likely': 5,
+      // Improvement
+      'no, it has decreased': 1, 'no change': 3, 'yes, somewhat': 4, 'yes, significantly': 5,
+      // Difficulty (left to right: hard -> easy)
+      'extremely difficult': 1, 'too difficult': 2, 'just right': 3, 'too easy': 4, 'extremely easy': 5,
+      // Frequency of issues / cleanliness
+      'never': 5, 'rarely': 4, 'yes, occasionally': 3, 'yes, frequently': 2, 'always': 1,
+      // Cleanliness phrasing
+      'most of the time': 4
+    };
+
+    function titleCase(s){ return (s||'').toString().replace(/_/g,' ').replace(/\s+/g,' ').trim().replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase()); }
+
+    function tryParseDate(v){
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    function coerceNumber(v){
+      if (v == null) return NaN;
+      const s = String(v).trim();
+      const sl = s.toLowerCase();
+      if (sl in LIKERT_MAP) return LIKERT_MAP[sl];
+      const n = Number(s);
+      return Number.isFinite(n) ? n : NaN;
+    }
+
+    function detectColumns(rows){
+      if (!rows.length) return { numeric: [], categorical: [], timestamp: null };
+      const cols = Object.keys(rows[0] || {});
+      const numeric = [];
+      const categorical = [];
+      let timestamp = null;
+
+      // timestamp candidates by header name
+      for (const c of cols){
+        const lc = c.toLowerCase();
+        if (lc.includes('time') || lc.includes('date')) {
+          // check if values parse
+          const ok = rows.slice(0, 20).some(r => tryParseDate(r[c]));
+          if (ok) { timestamp = c; break; }
+        }
+      }
+
+      for (const c of cols){
+        let numCount = 0, total = 0;
+        const uniques = new Set();
+        for (const r of rows){
+          const v = r[c];
+          if (v !== undefined && v !== null && String(v).trim() !== ''){
+            total++;
+            uniques.add(String(v));
+            if (!Number.isNaN(coerceNumber(v))) numCount++;
+          }
+        }
+        const numericRatio = total ? numCount / total : 0;
+        if (numericRatio >= 0.6) numeric.push(c); // mostly numeric
+        else if (uniques.size <= Math.min(20, Math.max(5, Math.floor(rows.length*0.3)))) categorical.push(c);
+      }
+
+      return { numeric, categorical, timestamp };
+    }
+
+    function groupBy(arr, keys){
+      const map = new Map();
+      for (const row of arr){
+        const k = keys.map(k => String(row[k])).join('||');
+        const prev = map.get(k) || { __key: k, __rows: [], ...Object.fromEntries(keys.map(k => [k, row[k]])) };
+        prev.__rows.push(row);
+        map.set(k, prev);
+      }
+      return Array.from(map.values());
+    }
+
+    function monthKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+
+    function countUp(el, target, suffix="", duration=800){
+      const start = 0; const startTime = performance.now();
+      el.classList.add('counting');
+      const step = (t)=>{
+        const p = Math.min(1, (t-startTime)/duration);
+        const val = Math.floor(start + (target-start)*p);
+        el.textContent = val.toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(step); else setTimeout(()=>el.classList.remove('counting'), 150);
+      };
+      requestAnimationFrame(step);
+    }
+
+    function setMetric(el, value){
+      if (typeof value === 'number' && Number.isFinite(value)) countUp(el, Math.round(value));
+      else el.textContent = value;
+    }
+
+    function computeKPIs(rows, cols, timestamp){
+      setMetric(kpiResponses, rows.length);
+      setMetric(kpiQuestions, Object.keys(rows[0] || {}).length);
+
+      // pick a representative numeric column for average
+      let avg = NaN;
+      for (const c of cols.numeric){
+        const vals = rows.map(r => coerceNumber(r[c])).filter(v => Number.isFinite(v));
+        if (vals.length){ avg = vals.reduce((a,b)=>a+b,0)/vals.length; break; }
+      }
+      kpiAverage.textContent = Number.isFinite(avg) ? (avg <= 5 ? `${avg.toFixed(2)} / 5` : avg.toFixed(2)) : '—';
+
+      // last updated from timestamp or now
+      if (timestamp){
+        const dates = rows.map(r => tryParseDate(r[timestamp])).filter(Boolean);
+        kpiUpdated.textContent = dates.length ? dates.sort((a,b)=>b-a)[0].toISOString().slice(0,10) : '—';
+      } else {
+        kpiUpdated.textContent = new Date().toISOString().slice(0,10);
+      }
+    }
+
+    function fillSelectors(cols){
+      // Question (prefer numeric first)
+      const optionsQ = [...cols.numeric, ...cols.categorical];
+      selectQuestion.innerHTML = optionsQ.map((c,i)=>`<option value="${c}" ${i===0?'selected':''}>${titleCase(c)}</option>`).join('');
+
+      // Group by (categorical only)
+      selectGroup.innerHTML = ['(none)', ...cols.categorical].map((c,i)=>`<option value="${c}">${i===0?c:titleCase(c)}</option>`).join('');
+
+      // Time selector if exists
+      selectTime.innerHTML = `<option value="(none)">(none)</option>${cols.timestamp ? `<option selected value="${cols.timestamp}">${titleCase(cols.timestamp)}</option>` : ''}`;
+    }
+
+    function histogram(values, bins=10){
+      const clean = values.filter(Number.isFinite);
+      if (!clean.length) return { labels: [], counts: [] };
+      const min = Math.min(...clean), max = Math.max(...clean);
+      const step = (max - min) / bins || 1;
+      const edges = Array.from({length: bins+1}, (_,i)=>min + i*step);
+      const counts = new Array(bins).fill(0);
+      for (const v of clean){
+        let idx = Math.floor((v - min) / step);
+        if (idx >= bins) idx = bins-1;
+        if (idx < 0) idx = 0;
+        counts[idx]++;
+      }
+      const labels = counts.map((_,i)=>`${(edges[i]).toFixed(1)}–${(edges[i+1]).toFixed(1)}`);
+      return { labels, counts };
+    }
+
+    function palette(n){
+      const base = ["#22d3ee","#a78bfa","#34d399","#f472b6","#60a5fa","#f59e0b","#f87171","#10b981","#e879f9","#facc15"];
+      const out = [];
+      for(let i=0;i<n;i++) out.push(base[i%base.length]);
+      return out;
+    }
+
+    function destroyCharts(){ if (CHART1) CHART1.destroy(); if (CHART2) CHART2.destroy(); }
+
+    function exportChart(chart, filename){
+      try{
+        const url = chart.toBase64Image('image/png', 1);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.click();
+      } catch(e){ console.error(e); alert('Export failed'); }
+    }
+
+    function drawCharts(rows, cols){
+      const q = selectQuestion.value;
+      const g = selectGroup.value;
+      const t = selectTime.value !== '(none)' ? selectTime.value : null;
+
+      destroyCharts();
+
+      // Chart 1: if q numeric & time exists => monthly average line; else histogram or bar counts
+      const ctx1 = chart1El.getContext('2d');
+      const qIsNumeric = cols.numeric.includes(q);
+      let chart1Config;
+      if (qIsNumeric && t){
+        // group by month
+        const monthly = new Map();
+        for (const r of rows){
+          const d = tryParseDate(r[t]);
+          if (!d) continue;
+          const m = monthKey(d);
+          const v = coerceNumber(r[q]);
+          if (!Number.isFinite(v)) continue;
+          const bucket = monthly.get(m) || [];
+          bucket.push(v);
+          monthly.set(m, bucket);
+        }
+        const labels = Array.from(monthly.keys()).sort();
+        const data = labels.map(m => {
+          const arr = monthly.get(m)||[];
+          return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0;
+        });
+        chart1Config = {
+          type: 'line',
+          data: { labels, datasets: [{ label: `Avg ${titleCase(q)} by Month`, data, tension: 0.35, fill: true, borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,0.15)', pointRadius: 3 }]},
+          options: { responsive: true, animation: { duration: 600 }, scales: { y: { beginAtZero: true } } }
+        };
+        document.getElementById('chart1Title').textContent = `Average ${titleCase(q)} by Month`;
+      } else if (qIsNumeric) {
+        const values = rows.map(r => coerceNumber(r[q])).filter(Number.isFinite);
+        const {labels, counts} = histogram(values, 10);
+        chart1Config = {
+          type: 'bar',
+          data: { labels, datasets: [{ label: `Distribution of ${titleCase(q)}`, data: counts, backgroundColor: '#60a5fa' }]},
+          options: { responsive: true, animation: { duration: 600 }, scales: { y: { beginAtZero: true } } }
+        };
+        document.getElementById('chart1Title').textContent = `Distribution: ${titleCase(q)}`;
+      } else {
+        // categorical counts
+        const counts = new Map();
+        for (const r of rows){
+          const key = String(r[q] ?? 'Missing');
+          counts.set(key, (counts.get(key)||0)+1);
+        }
+        const labels = Array.from(counts.keys());
+        const data = labels.map(l => counts.get(l));
+        chart1Config = {
+          type: 'bar',
+          data: { labels, datasets: [{ label: `${titleCase(q)} counts`, data, backgroundColor: palette(labels.length) }]},
+          options: { indexAxis: 'y', responsive: true, animation: { duration: 600 }, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+        };
+        document.getElementById('chart1Title').textContent = `Response Counts: ${titleCase(q)}`;
+      }
+      CHART1 = new Chart(ctx1, chart1Config);
+
+      // Chart 2: group comparison. If group by is (none), pick top categorical; if numeric with group => avg by group
+      const ctx2 = chart2El.getContext('2d');
+      let chart2Config;
+      if (g && g !== '(none)' && cols.numeric.includes(q)){
+        // average of q by group
+        const groups = groupBy(rows, [g]);
+        const labels = groups.map(x => String(x[g] ?? 'Missing'));
+        const data = groups.map(x => {
+          const vals = x.__rows.map(r => coerceNumber(r[q])).filter(Number.isFinite);
+          return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+        });
+        chart2Config = {
+          type: 'bar',
+          data: { labels, datasets: [{ label: `Avg ${titleCase(q)} by ${titleCase(g)}`, data, backgroundColor: palette(labels.length) }]},
+          options: { responsive: true, animation: { duration: 600 }, scales: { y: { beginAtZero: true } } }
+        };
+        document.getElementById('chart2Title').textContent = `Average by ${titleCase(g)}`;
+      } else if (g && g !== '(none)' && !cols.numeric.includes(q)) {
+        // stacked counts of categorical q by group
+        const counts = new Map(); // key: group => map value => count
+        const values = new Set();
+        for (const r of rows){
+          const groupVal = String(r[g] ?? 'Missing');
+          const qVal = String(r[q] ?? 'Missing');
+          values.add(qVal);
+          const inner = counts.get(groupVal) || new Map();
+          inner.set(qVal, (inner.get(qVal)||0)+1);
+          counts.set(groupVal, inner);
+        }
+        const labels = Array.from(counts.keys());
+        const distinctVals = Array.from(values);
+        const colors = palette(distinctVals.length);
+        const datasets = distinctVals.map((val, i) => ({
+          label: val,
+          data: labels.map(l => (counts.get(l).get(val)||0)),
+          backgroundColor: colors[i],
+          stack: 'stack1'
+        }));
+        chart2Config = {
+          type: 'bar',
+          data: { labels, datasets },
+          options: { responsive: true, animation: { duration: 600 }, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } } }
+        };
+        document.getElementById('chart2Title').textContent = `Distribution by ${titleCase(g)}`;
+      } else if (cols.numeric.includes(q)) {
+        // box-like: show per-quantile bars as fallback
+        const values = rows.map(r => coerceNumber(r[q])).filter(Number.isFinite).sort((a,b)=>a-b);
+        const pct = p => values.length ? values[Math.floor((values.length-1)*p)] : 0;
+        const lab = ['Min','Q1','Median','Q3','Max'];
+        const data = [pct(0), pct(0.25), pct(0.5), pct(0.75), pct(1)];
+        chart2Config = { type:'bar', data:{ labels: lab, datasets:[{ label: `${titleCase(q)} Summary`, data, backgroundColor: '#a78bfa' }]}, options:{ responsive:true, animation:{ duration: 600 }, scales:{ y:{ beginAtZero:true } } } };
+        document.getElementById('chart2Title').textContent = `Summary Stats`;
+      } else {
+        // if categorical and no group selected, show top categories share pie
+        const counts = new Map();
+        for (const r of rows){
+          const key = String(r[q] ?? 'Missing');
+          counts.set(key, (counts.get(key)||0)+1);
+        }
+        const entries = Array.from(counts.entries()).sort((a,b)=>b[1]-a[1]).slice(0,8);
+        const labels = entries.map(e=>e[0]);
+        const data = entries.map(e=>e[1]);
+        chart2Config = { type:'doughnut', data:{ labels, datasets:[{ data, backgroundColor: palette(labels.length) }]}, options:{ responsive:true, animation:{ duration: 600 } } };
+        document.getElementById('chart2Title').textContent = `Top Categories`;
+      }
+      CHART2 = new Chart(ctx2, chart2Config);
+    }
+
+    function onSelectionsChange(rows, cols){
+      drawCharts(rows, cols);
+    }
+
+    function loadRowsFromCSV(file){
+      return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+          header: true,
+          skipEmptyLines: true,
+          complete: res => resolve(res.data),
+          error: err => reject(err)
+        });
+      });
+    }
+
+    function loadRowsFromXLSX(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const wb = XLSX.read(data, { type: 'array' });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+            resolve(rows);
+          } catch (err){ reject(err); }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    // CSV export removed per request
+    function downloadCSV(rows, filename='data.csv'){
+      // intentionally left blank
+    }
+    
+    async function ingest(file){
+      try {
+        const isCSV = file.name.toLowerCase().endsWith('.csv');
+        const rows = isCSV ? await loadRowsFromCSV(file) : await loadRowsFromXLSX(file);
+        if (!rows || !rows.length) { alert('No rows detected. Check your file.'); return; }
+        const cols = detectColumns(rows);
+        computeKPIs(rows, cols, cols.timestamp);
+        fillSelectors(cols);
+        drawCharts(rows, cols);
+
+        // wire interactions
+        selectQuestion.onchange = () => onSelectionsChange(rows, cols);
+        selectGroup.onchange = () => onSelectionsChange(rows, cols);
+        selectTime.onchange = () => onSelectionsChange(rows, cols);
+      } catch (e){
+        console.error(e);
+        alert('Failed to load file. Please ensure it\'s a valid CSV/XLSX.');
+      }
+    }
+
+    // Summary helper
+    function updateSummary(rows, cols){
+      const box = document.getElementById('summary');
+      if (!rows.length){ box.innerHTML = '<p><strong>Summary:</strong> No data.</p>'; return; }
+      let best = null, worst = null;
+      for (const c of cols.numeric){
+        const vals = rows.map(r => coerceNumber(r[c])).filter(Number.isFinite);
+        if (!vals.length) continue;
+        const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+        if (!best || avg > best.avg) best = { col: c, avg };
+        if (!worst || avg < worst.avg) worst = { col: c, avg };
+      }
+      let catInsight = null;
+      if (cols.categorical.length){
+        const c = cols.categorical[0];
+        const counts = new Map();
+        for (const r of rows){
+          const k = String(r[c] ?? 'Missing');
+          counts.set(k, (counts.get(k)||0)+1);
+        }
+        const top = Array.from(counts.entries()).sort((a,b)=>b[1]-a[1])[0];
+        if (top) catInsight = { col: c, value: top[0], count: top[1] };
+      }
+      const chips = [];
+      chips.push(`<div class="chip"><span class="label">Total responses</span><span class="val">${rows.length}</span></div>`);
+      if (best) chips.push(`<div class="chip"><span class="label">Highest Avg</span><span class="val">${titleCase(best.col)} — ${best.avg.toFixed(2)}</span></div>`);
+      if (worst) chips.push(`<div class="chip"><span class="label">Lowest Avg</span><span class="val">${titleCase(worst.col)} — ${worst.avg.toFixed(2)}</span></div>`);
+      if (catInsight) chips.push(`<div class="chip"><span class="label">Most common (${titleCase(catInsight.col)})</span><span class="val">${catInsight.value} (${catInsight.count})</span></div>`);
+      box.innerHTML = `<p><strong>Summary:</strong></p><div class="summary-grid">${chips.join('')}</div>`;
+    }
+
+    function computeInsights(rows, cols){
+      const list = document.getElementById('insightsList');
+      const items = [];
+      const lowerCols = (k)=>k.toLowerCase();
+      const colRecommend = (rows[0]?Object.keys(rows[0]):[]).find(c=>/recommend/i.test(c));
+      const colQuality = (rows[0]?Object.keys(rows[0]):[]).find(c=>/quality|teaching/i.test(c));
+      const colLevel = (rows[0]?Object.keys(rows[0]):[]).find(c=>/level.*study|current level|study/i.test(c.toLowerCase()));
+
+      if (colQuality){
+        const vals = rows.map(r=>coerceNumber(r[colQuality])).filter(Number.isFinite);
+        if (vals.length){
+          const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+          items.push(`Average teaching quality is ${avg.toFixed(2)}${avg<=5?"/5":""}.`);
+        }
+      }
+
+      if (colRecommend){
+        const vals = rows.map(r=>coerceNumber(r[colRecommend])).filter(Number.isFinite);
+        if (vals.length){
+          const pct = Math.round(100*vals.filter(v=>v>=4).length/vals.length);
+          items.push(`${pct}% of respondents are likely to recommend.`);
+        }
+      }
+
+      if (colLevel){
+        const counts = new Map();
+        for (const r of rows){ const k = String(r[colLevel] ?? 'Missing'); counts.set(k,(counts.get(k)||0)+1); }
+        const top = Array.from(counts.entries()).sort((a,b)=>b[1]-a[1])[0];
+        if (top) items.push(`Most common level of study: ${top[0]} (${top[1]}).`);
+      }
+
+      if (!items.length){
+        // Fallbacks
+        const num = cols.numeric[0];
+        if (num){
+          const vals = rows.map(r=>coerceNumber(r[num])).filter(Number.isFinite);
+          if (vals.length){ const avg = vals.reduce((a,b)=>a+b,0)/vals.length; items.push(`Average ${titleCase(num)} is ${avg.toFixed(2)}.`); }
+        }
+        const cat = cols.categorical[0];
+        if (cat){
+          const counts = new Map(); for (const r of rows){ const k = String(r[cat]??'Missing'); counts.set(k,(counts.get(k)||0)+1);} const top = Array.from(counts.entries()).sort((a,b)=>b[1]-a[1])[0];
+          if (top) items.push(`Most common ${titleCase(cat)}: ${top[0]} (${top[1]}).`);
+        }
+      }
+
+      list.innerHTML = items.slice(0,3).map(it=>`<li>${it}</li>`).join('');
+    }
+
+    // Auto-load bundled JSON
+    async function loadBundled(){
+      try{
+        const res = await fetch('assets/data.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('data.json not found');
+        const data = await res.json();
+        const rows = Array.isArray(data) ? data : (data.rows || []);
+        if (!rows.length){ throw new Error('No rows in data.json'); }
+        const cols = detectColumns(rows);
+        computeKPIs(rows, cols, cols.timestamp);
+        fillSelectors(cols);
+        drawCharts(rows, cols);
+        updateSummary(rows, cols);
+        computeInsights(rows, cols);
+        // wire interactions
+        selectQuestion.onchange = () => { drawCharts(rows, cols); updateSummary(rows, cols); computeInsights(rows, cols); };
+        selectGroup.onchange = () => { drawCharts(rows, cols); updateSummary(rows, cols); computeInsights(rows, cols); };
+        selectTime.onchange = () => { drawCharts(rows, cols); updateSummary(rows, cols); computeInsights(rows, cols); };
+        document.getElementById('export1').onclick = () => exportChart(CHART1, 'chart-distribution.png');
+        document.getElementById('export2').onclick = () => exportChart(CHART2, 'chart-comparison.png');
+      } catch (e){
+        console.error(e);
+        const box = document.getElementById('summary');
+        box.innerHTML = '<p><strong>Summary:</strong> Could not load assets/data.json. Please ensure it exists.</p>';
+      }
+    }
+
+    // initial selectors state
+    selectQuestion.innerHTML = '<option>Loading…</option>';
+    selectGroup.innerHTML = '<option>Loading…</option>';
+    selectTime.innerHTML = '<option>Loading…</option>';
+
+    loadBundled();
+
+    // Footer year
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+  })();
+  </script>
 </body>
 </html>

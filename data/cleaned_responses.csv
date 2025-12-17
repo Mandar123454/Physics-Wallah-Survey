@@ -1,6 +1,0 @@
-respondent_id,satisfaction_score,recommend_score,content_quality,platform_usability,value_for_money,usage_frequency,device,open_feedback
-1,8,9,High,Good,High,Daily,Mobile,"Great content, helped me a lot"
-2,7,8,Medium,Average,Medium,Weekly,Desktop,"Videos are sometimes slow"
-3,9,10,High,Excellent,High,Daily,Mobile,"Instructors explain concepts clearly"
-4,6,6,Medium,Average,Low,Monthly,Tablet,"Could improve UI navigation"
-5,8,9,High,Good,High,Daily,Desktop,"Practice questions are very useful"
