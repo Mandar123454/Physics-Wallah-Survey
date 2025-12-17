@@ -3,9 +3,12 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Made with](https://img.shields.io/badge/Chart.js-visualizations-ff6384?logo=chartdotjs&logoColor=white)
 ![Static](https://img.shields.io/badge/Static-Site-0ea5e9)
-![Deploy](https://img.shields.io/badge/Deploy-Netlify-00C7B7?logo=netlify&logoColor=white)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-00C7B7?logo=netlify&logoColor=white)](https://physics-wallah-survey.netlify.app/)
+[![Hosted on Netlify](https://img.shields.io/badge/Hosted%20on-Netlify-00ad9f?logo=netlify&logoColor=white)](https://physics-wallah-survey.netlify.app/)
 
 A polished single‑page dashboard (Chart.js + vanilla JS) for the Physics Wallah survey of 100 students. It autoloads `assets/data.json` generated from your Google Form responses and provides animated KPIs, filters, two rich charts, export to PNG, and an insights panel.
+
+Live site: https://physics-wallah-survey.netlify.app/
 
 ## Quick start
 
